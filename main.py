@@ -7,9 +7,11 @@ labels = {}
 
 args = sys.argv
 
+
 def findnext(text='.'):
-  with open(args[1]) as f:
-    lines = f.readlines()
+    with open(args[1]) as f:
+        lines = f.readlines()
+
 
 def parselabels(fn):
     linenum = 0
@@ -18,7 +20,7 @@ def parselabels(fn):
     with open(args[1]) as f:
         # parse labels for each line
         for line in f:
-            #clean up lines
+            # clean up lines
             line = line.replace('\n', '').replace('\r', '')
             if line[0] == '#':
                 # Note that linenum won't be increased, so the address
@@ -27,7 +29,7 @@ def parselabels(fn):
 
             if line[0] == '.':
                 labels[line[1:]] = linenum
-                
+
             else:
                 linenum = linenum + 1
 
@@ -37,7 +39,7 @@ def zerobin(fn):
         binary_file.close()
 
 
-#write out the binary
+# write out the binary
 def writebin(fn, b):
     with open("rom.bin", "ab") as binary_file:
         binary_file.write(bytearray(b))
@@ -76,8 +78,6 @@ with open(args[1]) as f:
 #print(tabulate(tokens, headers=['comm', 'reg', 'dat']))
 
 parselabels(args[1])
-print(labels)
+# print(labels)
 with open("rom.pic", "wb") as f:
     pickle.dump([tokens, labels], f)
-
-

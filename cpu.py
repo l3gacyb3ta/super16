@@ -39,6 +39,16 @@ def addhex(hexdat, value):
     intdat = intdat + int(value, 16)
     return hex(intdat)
 
+def subhex(hexdat, value):
+    intdat = int(hexdat, 16)
+    intdat = intdat - int(value, 16)
+    return hex(intdat)
+
+def mulhex(hexdat, value):
+    intdat = int(hexdat, 16)
+    intdat = intdat * int(value, 16)
+    return hex(intdat)
+
 
 def toint(hexdat):
     return int(hexdat, 16)
@@ -49,12 +59,6 @@ def printreg():
         print(chr(toint(registers['p1'])), end='')
     else:
         print()
-
-
-def subhex(hexdat, value):
-    intdat = int(hexdat, 16)
-    intdat = intdat - int(value, 16)
-    return hex(intdat)
 
 
 cmpstore = False
@@ -73,9 +77,30 @@ def runtok(tok):
 
     if com == 'add':
         registers[reg] = addhex(registers[reg], dat)
+    
+    if com == 'addr':
+        first = int(toint(registers[reg]))
+        second = int(toint(registers[dat]))
+
+        registers[reg] = hex(first + second)
 
     if com == 'sub':
         registers[reg] = subhex(registers[reg], dat)
+
+    if com == 'subr':
+        first = int(toint(registers[reg]))
+        second = int(toint(registers[dat]))
+
+        registers[reg] = hex(first - second)
+
+    if com == 'mul':
+        registers[reg] = subhex(registers[reg], dat)
+    
+    if com == 'mulr':
+        first = int(toint(registers[reg]))
+        second = int(toint(registers[dat]))
+
+        registers[reg] = hex(first * second)
 
     if com == 'prt':
         printreg()
@@ -95,7 +120,7 @@ def runtok(tok):
             pointer = labels[dat]
             return pointer
         else:
-          pass
+            pass
 
     if com == 'nbranch':
         pointer = 0
@@ -103,17 +128,27 @@ def runtok(tok):
             pointer = labels[dat]
             return pointer
         else:
-          pass
+            pass
 
     if com == 'cmp':
-      val1 = int(toint(registers[reg]))
-      val2 = int(toint(registers[dat]))
-      if val1 > val2:
-        registers['cm'] = '0x0001'
-      elif val1 < val2:
-        registers['cm'] = '0x0000'
-      else:
-        registers['cm'] = '0xffff'
+        val1 = int(toint(registers[reg]))
+        val2 = int(toint(registers[dat]))
+        if val1 > val2:
+            registers['cm'] = '0x0001'
+        elif val1 < val2:
+            registers['cm'] = '0x0000'
+        else:
+            registers['cm'] = '0xffff'
+
+    if com == 'log':
+        print(registers[reg])
+    
+    if com == 'noop':
+        pass
+    
+    if com == 'halt':
+        exit()
+
 
 global pointer
 pointer = 0
@@ -121,10 +156,10 @@ while pointer != len(instructions):
     lpoint = pointer
     val = runtok(instructions[lpoint])
     if val == None:
-      pointer += 1
+        pointer += 1
     else:
-      pointer = val
-    
-    #print(pointer)
-    
+        pointer = val
+
+    # print(pointer)
+
 print(tabulate(zip(registers.keys(), registers.values())))
