@@ -1,12 +1,6 @@
 # Do some math:
 
-load r1 0xffff
-load r2 0xffff
+load r1 0x0005
+load r2 0x0005
 
 mulr r1 r2
-
-load r3 0xffff
-load r4 0xffff
-load r5 0xffff
-load r6 0xffff
-load r7 0xffff
