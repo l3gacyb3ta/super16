@@ -3,3 +3,4 @@ __pycache__/*
 *.pyc
 pyproject.toml
 poetry.lock
+*.bak.py
