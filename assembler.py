@@ -1,17 +1,9 @@
-import sys
-import re
-import pickle
 from tabulate import tabulate
+import pickle, sys, re
 
 labels = {}
 
 args = sys.argv
-
-
-def findnext(text='.'):
-    with open(args[1]) as f:
-        lines = f.readlines()
-
 
 def parselabels(fn):
     linenum = 0
@@ -22,6 +14,10 @@ def parselabels(fn):
         for line in f:
             # clean up lines
             line = line.replace('\n', '').replace('\r', '')
+
+            if len(line) == 0:
+                continue
+            
             if line[0] == '#':
                 # Note that linenum won't be increased, so the address
                 # remains correct
@@ -58,6 +54,7 @@ with open(args[1]) as f:
     for line in f:
         if line == '':
             continue
+
         # Ignore labels
         if line[0] == '.':
             continue
@@ -75,9 +72,8 @@ with open(args[1]) as f:
         # print(str(tok))
         tokens.append(tok)
 
-#print(tabulate(tokens, headers=['comm', 'reg', 'dat']))
+# print(tabulate(tokens, headers=['comm', 'reg', 'dat']))
 
-parselabels(args[1])
 # print(labels)
 with open("rom.pic", "wb") as f:
     pickle.dump([tokens, labels], f)

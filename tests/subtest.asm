@@ -1,5 +1,4 @@
 load r1 0x000a
 load r2 0x0005
-mulr r1 r2
-halt 0x0000 0x0000
+subr r1 r2
 log r1 0x0000

@@ -1,10 +1,27 @@
-import pickle
 from tabulate import tabulate
+import pickle
 
 with open('rom.pic', 'rb') as f:
     data = pickle.load(f)
     instructions = data[0]
     labels = data[1]
+
+
+def cleanregs(registers):
+    for reg in registers.keys():
+        dat = registers[reg]
+        if len(dat) > 5:
+            dat = dat[:6]
+        
+        if len(dat) < 6:
+          dat = dat.replace('0x','')
+          datlen = len(dat)
+          dat = '0x' + '0' * (4 - datlen) + str(dat)
+
+        registers[reg] = dat
+
+    return registers
+
 
 registers = {
     'r1': '0x0000',
@@ -39,10 +56,12 @@ def addhex(hexdat, value):
     intdat = intdat + int(value, 16)
     return hex(intdat)
 
+
 def subhex(hexdat, value):
     intdat = int(hexdat, 16)
     intdat = intdat - int(value, 16)
     return hex(intdat)
+
 
 def mulhex(hexdat, value):
     intdat = int(hexdat, 16)
@@ -65,6 +84,12 @@ cmpstore = False
 
 
 def runtok(tok):
+    try:
+        len(tok[0])
+
+    except:
+        return None
+
     com = tok[0]
     reg = tok[1]
     dat = tok[2]
@@ -77,7 +102,7 @@ def runtok(tok):
 
     if com == 'add':
         registers[reg] = addhex(registers[reg], dat)
-    
+
     if com == 'addr':
         first = int(toint(registers[reg]))
         second = int(toint(registers[dat]))
@@ -95,7 +120,7 @@ def runtok(tok):
 
     if com == 'mul':
         registers[reg] = subhex(registers[reg], dat)
-    
+
     if com == 'mulr':
         first = int(toint(registers[reg]))
         second = int(toint(registers[dat]))
@@ -142,23 +167,31 @@ def runtok(tok):
 
     if com == 'log':
         print(registers[reg])
-    
+
     if com == 'noop':
         pass
-    
+
+    if com == 'jump':
+        return labels[reg]
+
     if com == 'halt':
         exit()
 
 
 global pointer
 pointer = 0
+
 while pointer != len(instructions):
     lpoint = pointer
     val = runtok(instructions[lpoint])
+
     if val == None:
         pointer += 1
+
     else:
         pointer = val
+
+    registers = cleanregs(registers)
 
     # print(pointer)
 
