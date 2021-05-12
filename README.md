@@ -12,58 +12,40 @@ The full list of opcodes, as well as an example, the instruction & explaination 
 |--------|-------------|-----------------------------------------------------------------------------|
 | 0x10   | store       | store reg reg2                                                              |
 |        |             | Copy value from one reg to another                                          |
-|        |             |                                                                             |
 | 0x20   | load        | load reg val                                                                |
 |        |             | Load a value into a reg                                                     |
-|        |             |                                                                             |
 | 0x30   | add         | add reg val                                                                 |
 |        |             | Add value to reg                                                            |
-|        |             |                                                                             |
 | 0x31   | addr        | addr reg reg2                                                               |
 |        |             | Adds reg2 to reg                                                            |
-|        |             |                                                                             |
 | 0x40   | sub         | sub reg val                                                                 |
 |        |             | Subtracts val from reg                                                      |
-|        |             |                                                                             |
 | 0x41   | subr        | subr reg reg2                                                               |
 |        |             | Subtracts reg2 from reg                                                     |
-|        |             |                                                                             |
 | 0x50   | mul         | mul reg val                                                                 |
 |        |             | Multipy register by value                                                   |
-|        |             |                                                                             |
 | 0x51   | mulr        | mul reg reg2                                                                |
 |        |             | Multiply reg by reg 2                                                       |
-|        |             |                                                                             |
 | 0x60   | div         | div reg val                                                                 |
 |        |             | Intiger divides the register by the value                                   |
-|        |             |                                                                             |
 | 0x61   | divr        | div reg reg2                                                                |
 |        |             | Initger devides reg by rg2                                                  |
-|        |             |                                                                             |
 | 0xff   | prt         | prt 0x0000 0x0000                                                           |
 |        |             | Print ascii value in p0 reg                                                 |
-|        |             |                                                                             |
 | 0x0f   | scrn        | scrn 0x0000 val                                                             |
 |        |             | Set pixel in x8 and y9 regs to the value (0: black) (1: white)              |
-|        |             |                                                                             |
 | 0xdd   | drw         | drw 0x0000 0x0000                                                           |
 |        |             | Draw screen buffer                                                          |
-|        |             |                                                                             |
 | 0xf0   | cmp         | cmp reg reg2                                                                |
 |        |             | Set cm reg to 0x0001 if bigger, 0x0000 if smaller, and 0xffff if their equal|
-|        |             |                                                                             |
 | 0xb0   | branch      | branch val label                                                            |
 |        |             | Branch to loop if cm is val                                                 |
-|        |             |                                                                             |
 | 0xb1   | nbranch     | nbranch val label                                                           |
 |        |             | Branch to loop if cm is not val                                             |
-|        |             |                                                                             |
 | 0xbb   | jump        | jump 0x0000 label                                                           |
 |        |             | Jump to label                                                               |
-|        |             |                                                                             |
 | 0x00   | noop        | noop 0x000 0x000                                                            |
 |        |             | Literally does nothing                                                      |
-|        |             |                                                                             |
 | 0xfe   | halt        | halt 0x0000 0x0000                                                          |
 |        |             | Halts the cpu                                                               |
   
