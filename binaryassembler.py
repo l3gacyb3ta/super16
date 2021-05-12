@@ -68,7 +68,7 @@ with open(sys.argv[1]) as f:
         if tok[0].lower() == "load":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
                 if a1[0] == '$':
                     # Address
@@ -77,7 +77,7 @@ with open(sys.argv[1]) as f:
                     b = [0x20, r, addr >> 8, addr & 0xFF]
                     writebin("rom.bin", b)
 
-                elif a1[0] == 'r':
+                elif a1[0] == 'r' or a1[0] == 'x' or a1[0] == 'y':
                     # register
                     r2 = int(a1[1:], 0)
 
@@ -101,7 +101,7 @@ with open(sys.argv[1]) as f:
         elif tok[0].lower() == "store":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
                 if a1[0] == '$':
                     # Address
@@ -110,7 +110,7 @@ with open(sys.argv[1]) as f:
                     b = [0x10, r, addr >> 8, addr & 0xFF]
                     writebin("rom.bin", b)
 
-                elif a1[0] == 'r':
+                elif a1[0] == 'r' or a1[0] == 'x' or a1[0] == 'y':
                     # Address in register
                     r2 = int(a1[1:], 0)
 
@@ -135,9 +135,9 @@ with open(sys.argv[1]) as f:
         elif tok[0].lower() == "cmp":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
-                if a1[0] == 'r':
+                if a1[0] == 'r' or a1[0] == 'x' or a1[0] == 'y':
                     # register
                     r2 = int(a1[1:], 0)
 
@@ -190,7 +190,7 @@ with open(sys.argv[1]) as f:
         elif tok[0].lower() == "add":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
                 # Value
                 v = int(a1, 0)
@@ -208,7 +208,7 @@ with open(sys.argv[1]) as f:
         elif tok[0].lower() == "addr":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
                 # register
                 r2 = int(a1[1:], 0)
@@ -227,7 +227,7 @@ with open(sys.argv[1]) as f:
         elif tok[0].lower() == "sub":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
                 # Value
                 v = int(a1, 0)
@@ -245,7 +245,7 @@ with open(sys.argv[1]) as f:
         elif tok[0].lower() == "subr":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
                 # register
                 r2 = int(a1[1:], 0)
@@ -264,7 +264,7 @@ with open(sys.argv[1]) as f:
         elif tok[0].lower() == "addr":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
                 # register
                 r2 = int(a1[1:], 0)
@@ -283,7 +283,7 @@ with open(sys.argv[1]) as f:
         elif tok[0].lower() == "mul":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
                 # Value
                 v = int(a1, 0)
@@ -301,7 +301,7 @@ with open(sys.argv[1]) as f:
         elif tok[0].lower() == "mulr":
             r = int(tok[1].lower()[1])
 
-            if r >= 0 and r <= 7:
+            if r >= 0 and r <= 9:
                 a1 = tok[2]
                 # register
                 r2 = int(a1[1:], 0)
@@ -331,6 +331,10 @@ with open(sys.argv[1]) as f:
         
         elif tok[0].lower() == "prt":
             b = [0x99, 0x00, 0x00, 0x00]
+            writebin("rom.bin", b)
+        
+        elif tok[0].lower() == "scrn":
+            b = [0x0f, 0x00, 0x0f, 0x00]
             writebin("rom.bin", b)
 
         else:

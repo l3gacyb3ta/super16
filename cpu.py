@@ -1,5 +1,9 @@
 from tabulate import tabulate
 import pickle
+import time
+
+tt0 = time.time()
+t0 = time.time()
 
 with open('rom.pic', 'rb') as f:
     data = pickle.load(f)
@@ -31,9 +35,9 @@ registers = {
     'r5': '0x0000',
     'r6': '0x0000',
     'r7': '0x0000',
-    'p1': '0x0000',
-    'x1': '0x0000',
-    'y1': '0x0000',
+    'p0': '0x0000',
+    'x8': '0x0000',
+    'y9': '0x0000',
     'cm': '0x0000',
 }
 
@@ -131,8 +135,8 @@ def runtok(tok):
         printreg()
 
     if com == 'scrn':
-        y = int(toint(registers['x1']))
-        x = int(toint(registers['y1']))
+        y = int(toint(registers['x8']))
+        x = int(toint(registers['y9']))
 
         disp[x][y] = 'X' if dat == "0xffff" else " "
 
@@ -177,11 +181,18 @@ def runtok(tok):
     if com == 'halt':
         exit()
 
+t1 = time.time()
+
+total = t1-t0
+# Timestamping
+# print("Init: " + str(total))
 
 global pointer
 pointer = 0
 
 while pointer != len(instructions):
+
+    t0 = time.time()
     lpoint = pointer
     val = runtok(instructions[lpoint])
 
@@ -193,6 +204,18 @@ while pointer != len(instructions):
 
     registers = cleanregs(registers)
 
+    t1 = time.time()
+
+    total = t1-t0
+
+    # time stamping
+    # print("Instruction " + str(lpoint) + ': ' + str(total))
+
     # print(pointer)
 
 print(tabulate(zip(registers.keys(), registers.values())))
+
+tt1 = time.time()
+
+total = tt1-tt0
+print("Total time: " + str(total))
