@@ -1,2 +1,2 @@
 read file
-python assembler.py tests/$file.asm && python cpu.py
+python3 assembler.py tests/$file.asm && python cpu.py

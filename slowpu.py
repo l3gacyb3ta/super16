@@ -192,7 +192,9 @@ while pointer != len(instructions):
         pointer = val
 
     registers = cleanregs(registers)
+    print(tabulate(zip(registers.keys(), registers.values())))
+    input()
 
     # print(pointer)
 
-print(tabulate(zip(registers.keys(), registers.values())))
+

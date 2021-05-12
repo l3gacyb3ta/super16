@@ -330,7 +330,7 @@ with open(sys.argv[1]) as f:
             writebin("rom.bin", b)
         
         elif tok[0].lower() == "prt":
-            b = [0x99, 0x00, 0x99, 0x00]
+            b = [0x99, 0x00, 0x00, 0x00]
             writebin("rom.bin", b)
 
         else:
