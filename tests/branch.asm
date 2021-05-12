@@ -2,7 +2,7 @@
 load r2 0x0005
 load r1 0x0001
 # setup h
-load p1 0x0068
+load p0 0x0068
 .top
 # Print h
 prt 0x0000 0x0000
@@ -13,5 +13,5 @@ cmp r1 r2
 nbranch 0x0001 top
 #
 # if it's done, write an g
-load p1 0x0067
+load p0 0x0067
 prt 0x0000 0x0000

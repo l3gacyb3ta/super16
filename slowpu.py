@@ -1,5 +1,10 @@
 from tabulate import tabulate
+from typing import Union
 import pickle
+import time
+
+tt0 = time.time()
+t0 = time.time()
 
 with open('rom.pic', 'rb') as f:
     data = pickle.load(f)
@@ -8,14 +13,20 @@ with open('rom.pic', 'rb') as f:
 
 
 def cleanregs(registers):
+    '''Cleans up the registers'''
     for reg in registers.keys():
         dat = registers[reg]
+
+        # if the data is to long
         if len(dat) > 5:
             dat = dat[:6]
 
+        # if it is to short
         if len(dat) < 6:
+            #remove 0x
             dat = dat.replace('0x', '')
             datlen = len(dat)
+            #                   add the right number of zeros
             dat = '0x' + '0' * (4 - datlen) + str(dat)
 
         registers[reg] = dat
@@ -31,51 +42,62 @@ registers = {
     'r5': '0x0000',
     'r6': '0x0000',
     'r7': '0x0000',
-    'p1': '0x0000',
-    'x1': '0x0000',
-    'y1': '0x0000',
+    'p0': '0x0000',
+    'x8': '0x0000',
+    'y9': '0x0000',
     'cm': '0x0000',
 }
 
-# init disp
 disp = []
 
-for i in range(0, 4):
-    disp.append([])
-    for x in range(0, 4):
-        disp[i].append(' ')
+X_VALUE = 5
+Y_VALUE = 4
 
+for y in range(0, Y_VALUE):
+    disp.append([])
+    for x in range(0, X_VALUE):
+        disp[y].append(' ')
 
 # print display
-def printdisp(disp):
+def printdisp(disp: list):
+    '''Prints out display using tabulate'''
     print(tabulate(disp))
 
 
-def addhex(hexdat, value):
+def addhex(hexdat: str, value: str) -> str:
+    '''adds a hex to a hex'''
     intdat = int(hexdat, 16)
     intdat = intdat + int(value, 16)
     return hex(intdat)
 
 
-def subhex(hexdat, value):
+def subhex(hexdat: str, value: str) -> str:
+    '''Subtracts a hex from a hex'''
     intdat = int(hexdat, 16)
     intdat = intdat - int(value, 16)
     return hex(intdat)
 
 
-def mulhex(hexdat, value):
+def mulhex(hexdat: str, value: str) -> str:
+    '''Multiplies a hex by a hex'''
     intdat = int(hexdat, 16)
     intdat = intdat * int(value, 16)
     return hex(intdat)
 
+def divhex(hexdat: str, value: str) -> str:
+    '''Divides a hex by a hex'''
+    intdat = int(hexdat, 16)
+    intdat = intdat // int(value, 16)
+    return hex(intdat)
 
-def toint(hexdat):
+def toint(hexdat: str) -> int:
+    '''Converts a hex to an int'''
     return int(hexdat, 16)
 
 
 def printreg():
-    if toint(registers['p1']) != 0:
-        print(chr(toint(registers['p1'])), end='')
+    if toint(registers['p0']) != 0:
+        print(chr(toint(registers['p0'])), end='')
     else:
         print()
 
@@ -83,7 +105,8 @@ def printreg():
 cmpstore = False
 
 
-def runtok(tok):
+def runtok(tok: list) -> Union[None, int]:
+    '''Interpret 1 token from a list'''
     try:
         len(tok[0])
 
@@ -126,13 +149,22 @@ def runtok(tok):
         second = int(toint(registers[dat]))
 
         registers[reg] = hex(first * second)
+    
+    if com == 'div':
+        registers[reg] = subhex(registers[reg], dat)
+
+    if com == 'divr':
+        first = int(toint(registers[reg]))
+        second = int(toint(registers[dat]))
+
+        registers[reg] = hex(first // second)
 
     if com == 'prt':
         printreg()
 
     if com == 'scrn':
-        y = int(toint(registers['x1']))
-        x = int(toint(registers['y1']))
+        y = toint(registers['x8'])
+        x = int(toint(registers['y9']))
 
         disp[x][y] = 'X' if dat == "0xffff" else " "
 
@@ -177,11 +209,17 @@ def runtok(tok):
     if com == 'halt':
         exit()
 
+t1 = time.time()
+
+total = t1-t0
+# Timestamping
+# print("Init: " + str(total))
 
 global pointer
 pointer = 0
 
 while pointer != len(instructions):
+
     lpoint = pointer
     val = runtok(instructions[lpoint])
 
@@ -192,9 +230,11 @@ while pointer != len(instructions):
         pointer = val
 
     registers = cleanregs(registers)
+    # print out registers
     print(tabulate(zip(registers.keys(), registers.values())))
     input()
 
-    # print(pointer)
+
+
 
 

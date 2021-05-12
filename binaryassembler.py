@@ -261,24 +261,6 @@ with open(sys.argv[1]) as f:
 
                 sys.exit()
                 
-        elif tok[0].lower() == "addr":
-            r = int(tok[1].lower()[1])
-
-            if r >= 0 and r <= 9:
-                a1 = tok[2]
-                # register
-                r2 = int(a1[1:], 0)
-
-                b = [0x31, r, 0, r2]
-                writebin("rom.bin", b)
-
-
-            else:
-                print("Invalid register name")
-
-                print(tok[1].lower())
-
-                sys.exit()
 
         elif tok[0].lower() == "mul":
             r = int(tok[1].lower()[1])
@@ -307,6 +289,43 @@ with open(sys.argv[1]) as f:
                 r2 = int(a1[1:], 0)
 
                 b = [0x51, r, 0, r2]
+                writebin("rom.bin", b)
+
+
+            else:
+                print("Invalid register name")
+
+                print(tok[1].lower())
+
+                sys.exit()
+        
+        elif tok[0].lower() == "div":
+            r = int(tok[1].lower()[1])
+
+            if r >= 0 and r <= 9:
+                a1 = tok[2]
+                # Value
+                v = int(a1, 0)
+
+                b = [0x60, r, v >> 8, v & 0xFF]
+                writebin("rom.bin", b)
+
+            else:
+                print("Invalid register name")
+
+                print(tok[1].lower())
+
+                sys.exit()
+
+        elif tok[0].lower() == "divr":
+            r = int(tok[1].lower()[1])
+
+            if r >= 0 and r <= 9:
+                a1 = tok[2]
+                # register
+                r2 = int(a1[1:], 0)
+
+                b = [0x61, r, 0, r2]
                 writebin("rom.bin", b)
 
 
