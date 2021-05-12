@@ -1,6 +1,28 @@
 # super16
 A strange little 16bit ISA/Architecture.  
   
+## Installing
+Run ```git clone https://github.com/l3gacyb3ta/super16.git && cd super16```, then run whatever command you like! Examples are bellow in the example commands section.  
+  
+## How to run with emulator
+As I have not yet learned how to build an actual sim in logisim or similar software (so many sim-s!), I have implemented this ISA in python. After running ```assembler.py``` with a valid asembly file as an argument, a pickle file named rom.pic will appear. In order to run it, simply execute ```cpu.py``` for normal use, and ```slowpu.py``` for debugging.  
+  
+## Binary compiling
+In order to compile to a binary that would run on a theoretical S16 cpu, simply invoke ```binaryassembler.py``` with the asembley file as a parameter.  
+  
+## Examples
+A set of example programs are provided in the ```tests/``` directory. This is a great place to begin programming for S16. I have also included a script ```test.sh``` to run a test file. To do that, simply run ```test.sh``` and type the name (without .asm) of the file you want to run, and it should run.  
+  
+## Example commands
+* Running an assembly file:
+```
+$ python assembler.py tests/scrn.asm
+$ python cpu.py
+```
+* Compiling to a binary:
+```
+$ python binaryassembler.py tests/scrn.asm
+```  
 ## Theory
 One instruction is composed of 32 bits, making up 3 catagories; Opcode, Register and data. The opcode is two hexadecimal digits, the register is another two, and the data is a 4-digit hexadecimal number split into two two-digit numbers. Here is an example instruction loading ```0xf988``` into ```r5```:  
 | Opcode | Register | Data 1 | Data 2 |
@@ -8,7 +30,7 @@ One instruction is composed of 32 bits, making up 3 catagories; Opcode, Register
 | 0x20   | 0x05     | 0xf9   | 0x88   |
   
 The full list of opcodes, as well as an example, the instruction & explaination are as follows:  
-| opcode | instruction |                                                                             |
+| Opcode | Instruction |                                                                             |
 |--------|-------------|-----------------------------------------------------------------------------|
 | 0x10   | store       | store reg reg2                                                              |
 |        |             | Copy value from one reg to another                                          |
@@ -48,26 +70,3 @@ The full list of opcodes, as well as an example, the instruction & explaination 
 |        |             | Literally does nothing                                                      |
 | 0xfe   | halt        | halt 0x0000 0x0000                                                          |
 |        |             | Halts the cpu                                                               |
-  
-## Installing
-Run ```git clone https://github.com/l3gacyb3ta/super16.git && cd super16```, then run whatever command you like! Examples are bellow in the example commands section.  
-  
-## How to run with emulator
-As I have not yet learned how to build an actual sim in logisim or similar software (so many sim-s!), I have implemented this ISA in python. After running ```assembler.py``` with a valid asembly file as an argument, a pickle file named rom.pic will appear. In order to run it, simply execute ```cpu.py``` for normal use, and ```slowpu.py``` for debugging.  
-  
-## Binary compiling
-In order to compile to a binary that would run on a theoretical S16 cpu, simply invoke ```binaryassembler.py``` with the asembley file as a parameter.  
-  
-## Examples
-A set of example programs are provided in the ```tests/``` directory. This is a great place to begin programming for S16. I have also included a script ```test.sh``` to run a test file. To do that, simply run ```test.sh``` and type the name (without .asm) of the file you want to run, and it should run.  
-  
-## Example commands
-* Running an assembly file:
-```
-$ python assembler.py tests/scrn.asm
-$ python cpu.py
-```
-* Compiling to a binary:
-```
-$ python binaryassembler.py tests/scrn.asm
-```
