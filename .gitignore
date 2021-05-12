@@ -1,7 +1,8 @@
 rom.pic
+rom.bin
 __pycache__/*
 *.pyc
 pyproject.toml
 poetry.lock
 *.bak.py
-rom.bin
+.replit
